@@ -1,0 +1,30 @@
+.profile__profession {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  margin: 10px 0px 0px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: calc(1280px - 120px - 150px - 2 * 199px - 75px);
+}
+
+@media screen and (max-width: 990px) {
+  .profile__profession {
+    text-align: center;
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 395px) {
+  .profile__profession {
+    font-size: 14px;
+    line-height: 17px;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+}

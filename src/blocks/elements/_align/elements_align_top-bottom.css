@@ -1,0 +1,11 @@
+.elements_align_top-bottom {
+  margin-top: 50px;
+  margin-bottom: 66px;
+}
+
+@media screen and (max-width: 585px) {
+  .elements_align_top-bottom {
+    margin-top: 36px;
+    margin-bottom: 48px;
+  }
+}

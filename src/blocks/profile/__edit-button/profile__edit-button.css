@@ -1,0 +1,48 @@
+.profile__edit-button {
+  height: 24px;
+  width: 24px;
+  margin-left: 17px;
+  margin-bottom: 12px;
+  background-color: black;
+  position: relative;
+  cursor: pointer;
+  transition: opacity .3s linear;
+  border: 1px solid white;
+  box-sizing: border-box;
+}
+
+.profile__edit-button::before {
+  content: '';
+  display: block;
+  background-image: url(../../../images/Pensil.svg);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 10px;
+  width: 10px;
+  /* padding: 7px; */
+  /* box-sizing: border-box; */
+  background-size: contain;
+  background-repeat: no-repeat;
+  /* border: 1px solid red; */
+}
+
+.profile__edit-button:hover {
+  opacity: .6;
+}
+
+@media screen and (max-width: 358px) {
+  .profile__edit-button {
+    width: 18px;
+    height: 18px;
+    margin-left: 0;
+    margin-bottom: 18px;
+  }
+
+  .profile__edit-button::before {
+    width: 7.5px;
+    height: 7.5px;
+    background-size: contain;
+  }
+}

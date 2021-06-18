@@ -1,0 +1,24 @@
+.page_content_paddings {
+  padding: 45px 199px 60px;
+  /* padding: 45px calc(100% - 1280px) 60px; */
+}
+
+/* max-width: 1678px */
+
+@media screen and (min-width: 1678px) {
+  .page_content_paddings {
+    padding: 45px calc((100% - 1280px)/2) 60px;
+  }
+}
+
+@media screen and (max-width: 734px) {
+  .page_content_paddings {
+    padding: 45px 100px 60px;
+  }
+}
+
+@media screen and (max-width: 585px) {
+  .page_content_paddings {
+    padding: 28px 19px 36px;
+  }
+}

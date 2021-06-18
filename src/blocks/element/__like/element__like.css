@@ -1,0 +1,19 @@
+.element__like {
+  background-image: url(../../../images/Group.svg);
+  /* width: 20.76px; */
+  width: 22px;
+  /* height: 18.13px; */
+  height: 19px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity .3s linear;
+}
+
+.element__like:hover {
+  opacity: .6;
+}
+
+.element__like:focus {
+  outline: none;
+}

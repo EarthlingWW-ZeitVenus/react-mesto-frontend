@@ -1,0 +1,22 @@
+.profile__full-name {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-weight: 500;
+  font-size: 42px;
+  line-height: 1.33;
+  margin: 18px 0px 0px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: calc(1280px - 120px - 150px - 2 * 199px - 75px);
+}
+
+@media screen and (max-width: 395px) {
+  .profile__full-name {
+    font-size: 27px;
+    line-height: 56px;
+    max-width: calc(280px - 18px);
+  }
+}

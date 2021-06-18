@@ -1,0 +1,62 @@
+.popup__close-button {
+  position: absolute;
+  top: -41px;
+  right: -39.56px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+}
+
+.popup__close-button::before {
+  content: '';
+  display: block;
+  position: absolute;
+  /* height: 120%;
+  width: 120%; */
+  height: 100%;
+  width: 100%;
+  background-image: url(../../../images/CloseIcon.svg);
+  /* background-size: contain; */
+  /* top: -10px;
+  left: -10px; */
+  background-position: top -10px left -10px;
+  top: 0;
+  left: 0;
+  transition: opacity .3s linear;
+}
+
+.popup__close-button:hover::before {
+  opacity: .6;
+}
+
+.popup__close-button:focus {
+  outline: none;
+}
+
+/* .popup__close-button::before {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 40.7px;
+  border-left: 3px solid white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.popup__close-button::after {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 40.7px;
+  border-left: 3px solid white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.popup__close-button:hover {
+  opacity: .6;
+} */

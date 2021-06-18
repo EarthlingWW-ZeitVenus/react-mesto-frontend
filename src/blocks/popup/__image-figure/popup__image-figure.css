@@ -1,0 +1,15 @@
+.popup__image-figure {
+  margin: 0;
+  /* height: 100%; */
+  /* width: 75vw; */
+  /* height: 75vh; */
+  /* object-fit: contain; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* height: 100%; */
+}
