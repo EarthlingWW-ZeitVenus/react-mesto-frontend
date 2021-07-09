@@ -1,0 +1,10 @@
+.popup__input_theme_login {
+  background: inherit;
+  color: inherit;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #cccccc;
+}
+
+.popup__input_theme_login::placeholder {
+  color: #cccccc;
+}

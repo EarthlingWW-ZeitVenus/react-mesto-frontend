@@ -5,6 +5,7 @@ class Api {
     this._url = apiData.url;
     this._cohortId = apiData.cohortId;
     this._token = apiData.token;
+    this._authUrl = apiData.authUrl;
   }
 
 
@@ -21,7 +22,7 @@ class Api {
         "authorization": this._token,
       }
     })
-    .then(res => this._thenResponse(res));
+    .then(res => {return this._thenResponse(res)});
   }
 
   //Добавление новой карточки на сервер
@@ -37,7 +38,7 @@ class Api {
         "link": cardLink
       })
     })
-    .then(res => this._thenResponse(res));
+    .then(res => {return this._thenResponse(res)});
   }
 
   //Удаление карточки с сервера
@@ -48,7 +49,7 @@ class Api {
         "authorization": this._token,
       }
     })
-    .then(res => this._thenResponse(res));
+    .then(res => {return this._thenResponse(res)});
   }
 
   // addLike(cardId) {
@@ -71,6 +72,7 @@ class Api {
   //   .then(res => this._thenResponse(res));
   // }
 
+    //ToDo: можно попробовать сократить код, выполнив такую логику - method: isLiked ? "PUT" : "DELETE"
     changeLikeStatus(cardId, isLiked) {
       if (isLiked) {
         return fetch(`${this._url}/${this._cohortId}/cards/likes/${cardId}`, {
@@ -88,7 +90,7 @@ class Api {
         "authorization": this._token,
         }
         })
-        .then(res => this._thenResponse(res));
+        .then(res => {return this._thenResponse(res)});
       }
     }
 
@@ -100,7 +102,7 @@ class Api {
         "content-type": "application/json"
       }
     })
-    .then(res => this._thenResponse(res));
+    .then(res => {return this._thenResponse(res)});
   }
 
   //Редактирует на сервере информацию о пользователе
@@ -116,7 +118,7 @@ class Api {
         "about": profileAbout
       })
     })
-    .then(res => this._thenResponse(res));
+    .then(res => {return this._thenResponse(res)});
   }
 
   //Меняет иконку аватара пользователя
@@ -131,7 +133,25 @@ class Api {
         "avatar": avatarUrl
       })
     })
-    .then(res => this._thenResponse(res));
+    .then(res => {return this._thenResponse(res)});
+  }
+
+  //Регистрация пользователя
+  register(email, password) {
+    debugger;
+    return fetch(`${this._authUrl}/signup`, {
+      method: 'POST',
+      headers: {
+        "accept": "application/json",
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({password, email})
+    })
+    .then(res => {
+      debugger;
+      // console.log(`Вот такой ответ приходит при успешной регистрации - ${res.data.json}`)
+      return this._thenResponse(res);
+    });
   }
 
 }

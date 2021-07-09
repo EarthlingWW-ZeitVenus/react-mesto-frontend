@@ -1,0 +1,11 @@
+.auth-with-form__submit-button {
+  width: 100%;
+  height: 50px;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21.78px;
+}
+
+.auth-with-form__submit-button:hover {
+  cursor: pointer;
+}

@@ -36,7 +36,8 @@
   const apiData = {
     url: 'https://mesto.nomoreparties.co/v1',
     cohortId: 'cohort-21',
-    token: '5c233d66-a804-4163-848b-90319eaed808'
+    token: '5c233d66-a804-4163-848b-90319eaed808',
+    authUrl: 'https://auth.nomoreparties.co'
   }
 
   export { cardData, validatorData, popupData, apiData };

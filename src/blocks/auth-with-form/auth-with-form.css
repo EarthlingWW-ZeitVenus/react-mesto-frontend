@@ -1,0 +1,8 @@
+.auth-with-form {
+  min-height: 430px;
+  max-width: 358px;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}

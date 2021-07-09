@@ -1,0 +1,11 @@
+.popup__input_theme_register {
+  background: inherit;
+  color: inherit;
+  padding-bottom: 13px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #cccccc;
+}
+
+.popup__input_theme_register::placeholder {
+  color: #cccccc;
+}

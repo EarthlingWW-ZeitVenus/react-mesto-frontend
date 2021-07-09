@@ -5,6 +5,8 @@ import CurrentUserContext from '../contexts/CurrentUserContext';
 
 function EditProfilePopup(props) {
 
+  console.log('Этот код выполнился в теле EditProfilePopup');
+
     
   const currentUser = React.useContext(CurrentUserContext);
   const [name, setName] = React.useState('');
@@ -40,7 +42,7 @@ function EditProfilePopup(props) {
 
 
   return (
-    <PopupWithForm isOpen={props.isOpen} name="profile" title="Редактировать профиль" onClosePopup={props.onClose} buttonText="Сохранить" onSubmit={handleSubmit}>
+    <PopupWithForm isOpen={props.isOpen} name="profile" title="Редактировать профиль" onClose={props.onClose} buttonText="Сохранить" onSubmit={handleSubmit}>
       <input className="popup__input popup__input_field_full-name" id="full-name" name="name" type="text" minLength="2" maxLength="40" value={name} onChange={handleChangeName} required />
       <span className="popup__input-error popup__input-error_field_full-name" id="full-name-error"></span>
       <input className="popup__input popup__input_field_profession" id="profession" name="about" type="text" minLength="2" maxLength="200" value={description} onChange={handleChangeDescription} required />

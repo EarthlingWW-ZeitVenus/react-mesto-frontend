@@ -2,6 +2,13 @@
   min-height: 74px;
   max-width: 882px;
   border-bottom: 1px solid rgba(84, 84, 84, .7);
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-weight: normal;
 }
 
 @media screen and (max-width: 395px) {

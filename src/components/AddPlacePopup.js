@@ -5,6 +5,8 @@ import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup(props) {
 
+  console.log('Этот код выполнился в теле AddPlacePopup');
+
   const [cardTitle, setCardTitle] = React.useState('');
   const [cardUrl, setCardUrl] = React.useState('');
 
@@ -26,7 +28,7 @@ function AddPlacePopup(props) {
 
 
   return (
-    <PopupWithForm isOpen={props.isOpen} name="place" title="Новое место" onClosePopup={props.onClose} buttonText="Сохранить" onSubmit={handleSubmit}>
+    <PopupWithForm isOpen={props.isOpen} name="place" title="Новое место" onClose={props.onClose} buttonText="Сохранить" onSubmit={handleSubmit}>
       <input className="popup__input popup__input_field_place-title" id="place-title" name="placetitle" type="text" placeholder="Название" minLength="2" maxLength="30" value={cardTitle} onChange={handleChangeTitle} required />
       <span className="popup__input-error popup__input-error_field_place-title" id="place-title-error"></span>
       <input className="popup__input popup__input_field_link-to-image" id="link-to-image" name="linktoimage" type="url" placeholder="Ссылка на картинку" value={cardUrl} onChange={handleChangeUrl} required />

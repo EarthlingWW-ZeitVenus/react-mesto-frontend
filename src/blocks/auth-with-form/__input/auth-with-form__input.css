@@ -1,0 +1,14 @@
+.auth-with-form__input {
+  background: inherit;
+  color: inherit;
+  padding: 0;
+  padding-bottom: 13px;
+  margin-bottom: 30px;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #cccccc;
+}
+
+.auth-with-form__input::placeholder {
+  color: #cccccc;
+}
