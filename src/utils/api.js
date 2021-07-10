@@ -138,7 +138,7 @@ class Api {
 
   //Регистрация пользователя
   register(email, password) {
-    debugger;
+    // debugger;
     return fetch(`${this._authUrl}/signup`, {
       method: 'POST',
       headers: {
@@ -148,7 +148,7 @@ class Api {
       body: JSON.stringify({password, email})
     })
     .then(res => {
-      debugger;
+      // debugger;
       // console.log(`Вот такой ответ приходит при успешной регистрации - ${res.data.json}`)
       return this._thenResponse(res);
     });

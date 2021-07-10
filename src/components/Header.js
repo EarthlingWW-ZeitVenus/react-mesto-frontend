@@ -8,7 +8,7 @@ import logo from '../images/logo.svg';
 //2. Сюда передать результат проверки наличия токена и использовать его для отрисовки доп. инфы
 
 
-function Header({email, onSignOut}) {
+function Header({userEmail, onSignOut}) {
 
   const cssForLink = {
     color: "white",
@@ -39,7 +39,7 @@ function Header({email, onSignOut}) {
       <div style={{fontSize: "18px", lineHeight: "22px", display: "flex", alignItems: "center"}}>
         <Switch>
           <Route exact path="/">
-            <p>{email}</p>
+            <p>{userEmail}</p>
             <button style={{marginLeft: "24px", background: "black", color: "white", border: "none", cursor: "pointer"}} onClick={onSignOut}>Выйти</button>
           </Route>
           <Route path="/sign-up">

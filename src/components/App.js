@@ -42,8 +42,8 @@ function App() {
   const [cards, setCards] = React.useState([]);
   // const [urlParameter, setUrlParameter] = React.useState(url);
   const [infotooltipData, setInfotooltipData] = React.useState({message:"", status:""});
-  // const [email, setEmail] = React.useState('');
-  // const [password, setPassword] = React.useState('');
+  const [userEmail, setUserEmail] = React.useState('');
+  const [userPassword, setUserPassword] = React.useState('');
   // const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   // const history = useHistory();
   // console.log(`значение urlParameter внутри App сейчас такое ${urlParameter}`);
@@ -52,17 +52,20 @@ function App() {
 
   //Регистрация пользователя
   function onRegister({email, password}) {
-    debugger;
+    // debugger;
     api.register(email, password)
       .then(res => {
-        setCurrentUser({ ...currentUser, email, password });
-        debugger;
-        console.log(`Код выполнился в блоке then, результат - ${res}`);
+        // debugger;
+        console.log(res.data._id);
+        setUserEmail(email);
+        setUserPassword(password);
+        // setCurrentUser({ ...currentUser, email, password });
+        history.push('/sign-in');
+        // console.log(`Код выполнился в блоке then, результат - ${res}`);
         setInfotooltipData({
           message: 'Вы успешно зарегистрировались!',
           status: 'success'
         });
-        history.push('/sign-in');
       })
       .catch(res => {
         console.log(`Код выполнился в блоке catch, результат - ${res}`);
@@ -167,12 +170,12 @@ function App() {
     //Тут выполняется код при рендере любого компонета Main или самого Main (если не указан конкретный компонент в конце)
     Promise.all( [api.getProfile(), api.getAllCards()] )
     .then(([currentUserObj, initialCards]) => {
+      console.log('Этот код выполнился в теле App, внутри хука useEffect c параметром []');
       setCurrentUser(currentUserObj);
       setCards(initialCards);
-      console.log(currentUserObj);
+      // console.log(currentUserObj);
     })
     .catch(err => catchResponse(err));
-    console.log('Этот код выполнился в теле App, внутри хука useEffect c параметром []');
     // console.log(currentUser);
     //return () => {
     //Код внутри return выполнится при удалении любого или указанного компонета Main
@@ -201,7 +204,7 @@ function App() {
 
       <div className="page page_content_paddings">
 
-        <Header />
+        <Header userEmail={userEmail} />
 
         <Switch>
 
