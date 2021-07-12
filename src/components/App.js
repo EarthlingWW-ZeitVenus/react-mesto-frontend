@@ -14,6 +14,7 @@ import AddPlacePopup from './AddPlacePopup';
 import Login from './Login';
 import Register from './Register';
 import InfoTooltip from './InfoTooltip';
+import ProtectedRoute from './ProtectedRoute';
 
 //ToDo:
 // 1. Не забыть поменять в header заголовок с name на email
@@ -25,11 +26,14 @@ import InfoTooltip from './InfoTooltip';
 // 6. Был какой-то прием в теории, позволяющий при изменении стейта избирательно рендерить только определенные компоненты, надо посмотреть его
 // 7. Удалить все ненужные файлы, те что закоментированы в index.css
 // 8. Везде убрать пропсы, использовать деструктуризацию
+// 9. Реализовать окрытие delete popup
+// 10. Все длинные строки кода переделать в столбцы
 
 
 function App() {
 
   const history = useHistory();
+  console.log(history);
   
   //Реакт-хуки состояний
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -44,8 +48,7 @@ function App() {
   const [infotooltipData, setInfotooltipData] = React.useState({message:"", status:""});
   const [userEmail, setUserEmail] = React.useState('');
   const [userPassword, setUserPassword] = React.useState('');
-  // const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  // const history = useHistory();
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   // console.log(`значение urlParameter внутри App сейчас такое ${urlParameter}`);
   
   //Разные функции компонента App:
@@ -57,8 +60,8 @@ function App() {
       .then(res => {
         // debugger;
         console.log(res.data._id);
-        setUserEmail(email);
-        setUserPassword(password);
+        // setUserEmail(email);
+        // setUserPassword(password);
         // setCurrentUser({ ...currentUser, email, password });
         history.push('/sign-in');
         // console.log(`Код выполнился в блоке then, результат - ${res}`);
@@ -74,6 +77,41 @@ function App() {
           status: 'error'
         });
       })
+  }
+
+  function onLogin({email, password}) {
+    debugger;
+    api.login(email, password)
+      .then(jsonData => {
+        debugger;
+        if (jsonData.token) {
+          localStorage.setItem('jwt', jsonData.token);
+          setIsLoggedIn(true);
+        }
+        debugger;
+        console.log(jsonData);
+        console.log(localStorage);
+        setUserEmail(email);
+        // setUserPassword(password);
+        // setCurrentUser({ ...currentUser, email, password });
+        history.push('/');
+        // console.log(`Код выполнился в блоке then, результат - ${res}`);
+      })
+      .catch(res => {
+        debugger;
+        console.log(`Код выполнился в блоке catch, результат - ${res}`);
+        setInfotooltipData({
+          message: 'Что-то пошло не так! Попробуйте ещё раз.',
+          status: 'error'
+        });
+      })
+  }
+
+  function onSignOut(){
+    debugger;
+    localStorage.removeItem("jwt");
+    setIsLoggedIn(false);
+    history.push("/sign-in");
   }
 
 
@@ -167,20 +205,22 @@ function App() {
 
   //Хук осуществляющий запрос данных с сервера
   React.useEffect(() => {
+    if (isLoggedIn) {
     //Тут выполняется код при рендере любого компонета Main или самого Main (если не указан конкретный компонент в конце)
-    Promise.all( [api.getProfile(), api.getAllCards()] )
-    .then(([currentUserObj, initialCards]) => {
+      Promise.all( [api.getProfile(), api.getAllCards()] )
+      .then(([currentUserObj, initialCards]) => {
       console.log('Этот код выполнился в теле App, внутри хука useEffect c параметром []');
       setCurrentUser(currentUserObj);
       setCards(initialCards);
       // console.log(currentUserObj);
-    })
-    .catch(err => catchResponse(err));
+      })
+      .catch(err => catchResponse(err));
+    }
     // console.log(currentUser);
     //return () => {
     //Код внутри return выполнится при удалении любого или указанного компонета Main
     //}
-  }, []);//После запятой указывается конкретный компонет или компоненты в массиве,
+  }, [isLoggedIn]);//После запятой указывается конкретный компонет или компоненты в массиве,
   //если массив пустой то этот код исполнится один раз, если нет ничего будет рендерится
   // при каждом изменении любого компонента внутри родителя или самого родителя
 
@@ -204,37 +244,73 @@ function App() {
 
       <div className="page page_content_paddings">
 
-        <Header userEmail={userEmail} />
+        <Header userEmail={userEmail} onSignOut={onSignOut} />
 
         <Switch>
 
-          <Route exact path="/">
-            <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} forwardMainOnCardClick={handleCardClick} forwardMainOnCardLike={handleCardLike} forwardMainOnCardDelete={handleCardDelete} cards={cards}/>
-          </Route>
+          <ProtectedRoute
+            exact path="/"
+            component={Main}
+            isLoggedIn={isLoggedIn} 
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            forwardMainOnCardClick={handleCardClick}
+            forwardMainOnCardLike={handleCardLike}
+            forwardMainOnCardDelete={handleCardDelete}
+            cards={cards}
+          />
 
           <Route path="/sign-in">
-            <Login />
-            <InfoTooltip/>
+            <Login onLogin={onLogin}/>
+            <InfoTooltip
+              isOpen={Boolean(infotooltipData.message)}
+              onClose={closeAllPopups}
+              infotooltipData={infotooltipData}
+            />
           </Route>
 
           <Route path="/sign-up">
             <Register onRegister={onRegister}/>
-            <InfoTooltip isOpen={Boolean(infotooltipData.message)} onClose={closeAllPopups} infotooltipData={infotooltipData}/>
+            <InfoTooltip
+              isOpen={Boolean(infotooltipData.message)}
+              onClose={closeAllPopups}
+              infotooltipData={infotooltipData}
+            />
           </Route>
 
         </Switch>
       
         <Footer />
 
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+        />
 
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddCard={handleAddCard}/>
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+          onAddCard={handleAddCard}
+        />
 
-        <PopupWithForm name="delete" title="Вы уверены?" buttonText="Да"/>
+        <PopupWithForm
+          name="delete"
+          title="Вы уверены?"
+          buttonText="Да"
+        />
 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopups}
+        />
 
       </div>
 

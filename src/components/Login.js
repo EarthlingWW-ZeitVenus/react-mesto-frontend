@@ -7,12 +7,27 @@ import AuthWithForm from './AuthWithForm';
 // <input className="login__input login__input_field_email" id="email" name="email" type="email" placeholder="Email" minLength="5" value={cardTitle} onChange={handleChangeTitle} required />
 
 //ToDo: посмотреть на закоментированную строчки сверху, сделать такие-же подходящие функции и стейты
-function Login({isOpen, onLogin}) {
+function Login({ onLogin }) {
   console.log('Этот код выполнился в теле Login');
 
-  function onSubmit() {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
-  }
+  function handleEmailChange(evt) {
+    setEmail(evt.target.value)
+  };
+
+  function handlePasswordChange(evt) {
+    setPassword(evt.target.value)
+  };
+
+  function handleSubmit(evt) {
+    debugger;
+    evt.preventDefault();
+    onLogin({email, password});
+    setEmail('');
+    setPassword('');
+  };
 //   const { url } = useRouteMatch();
 //   const {urlParameter, handleUrlParameter} = React.useContext(EnvironmentContext);
 
@@ -27,7 +42,7 @@ function Login({isOpen, onLogin}) {
 //   }, );
   
   return (
-    <AuthWithForm name="login" title="Вход" buttonText="Войти" onSubmit={onSubmit} />
+    <AuthWithForm name="login" title="Вход" buttonText="Войти" onSubmit={handleSubmit} onEmailChange={handleEmailChange} onPasswordChange={handlePasswordChange}/>
   )
 }
 

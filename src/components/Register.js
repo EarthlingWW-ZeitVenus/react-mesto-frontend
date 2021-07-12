@@ -17,16 +17,16 @@ function Register({onRegister}) {
 
   function handleEmailChange(evt) {
     setEmail(evt.target.value)
-  }
+  };
 
   function handlePasswordChange(evt) {
     setPassword(evt.target.value)
-  }
+  };
 
   function handleSubmit(evt) {
     evt.preventDefault();
     onRegister({email, password});
-  }
+  };
 
 //   const { url } = useRouteMatch();
 //   const {urlParameter, handleUrlParameter} = React.useContext(EnvironmentContext);

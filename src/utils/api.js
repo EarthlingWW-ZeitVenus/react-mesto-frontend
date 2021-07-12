@@ -154,6 +154,40 @@ class Api {
     });
   }
 
+  login(email, password) {
+    debugger;
+    return fetch(`${this._authUrl}/signin`, {
+      method: 'POST',
+      headers: {
+        "accept": "application/json",
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({password, email})
+    })
+    .then(res => {
+      console.log(res);
+      debugger;
+      // console.log(`Вот такой ответ приходит при успешной регистрации - ${res.data.json}`)
+      return this._thenResponse(res);
+    });
+  }
+
+  checkToken(token) {
+    return fetch(`${this._authUrl}/users/me`, {
+      method: 'GET',
+      headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "authorization": `Bearer ${token}`
+      }
+    })
+    .then(res => {
+      debugger;
+      console.log(res);
+      return this._thenResponse(res);
+    })
+  }
+
 }
 
 const api = new Api(apiData);
