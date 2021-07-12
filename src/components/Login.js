@@ -1,6 +1,7 @@
 import React from 'react';
-// import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 import AuthWithForm from './AuthWithForm';
+// import { useHistory } from 'react-router-dom';
 // import EnvironmentContext from '../contexts/EnvironmentContext';
 
 // import React from 'react';
@@ -9,6 +10,12 @@ import AuthWithForm from './AuthWithForm';
 //ToDo: посмотреть на закоментированную строчки сверху, сделать такие-же подходящие функции и стейты
 function Login({ onLogin }) {
   console.log('Этот код выполнился в теле Login');
+
+  // const history = useHistory();
+
+  const { url } = useRouteMatch();
+
+  console.log(url);
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -24,10 +31,21 @@ function Login({ onLogin }) {
   function handleSubmit(evt) {
     debugger;
     evt.preventDefault();
+    // setEmail('');
+    // setPassword('');
     onLogin({email, password});
-    setEmail('');
-    setPassword('');
   };
+
+
+  // React.useEffect(() => {
+  //   debugger;
+  //   if(!isLoggedIn) {
+  //   setEmail('');
+  //   setPassword('');
+  //   }
+  // }, [isLoggedIn]);
+
+
 //   const { url } = useRouteMatch();
 //   const {urlParameter, handleUrlParameter} = React.useContext(EnvironmentContext);
 
@@ -42,7 +60,14 @@ function Login({ onLogin }) {
 //   }, );
   
   return (
-    <AuthWithForm name="login" title="Вход" buttonText="Войти" onSubmit={handleSubmit} onEmailChange={handleEmailChange} onPasswordChange={handlePasswordChange}/>
+    <AuthWithForm
+      name="login"
+      title="Вход"
+      buttonText="Войти"
+      onSubmit={handleSubmit}
+      onEmailChange={handleEmailChange}
+      onPasswordChange={handlePasswordChange}
+    />
   )
 }
 

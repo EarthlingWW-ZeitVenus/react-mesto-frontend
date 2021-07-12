@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, useHistory} from 'react-router-dom';
+import { Route, Switch, useHistory, Redirect} from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -47,7 +47,7 @@ function App() {
   // const [urlParameter, setUrlParameter] = React.useState(url);
   const [infotooltipData, setInfotooltipData] = React.useState({message:"", status:""});
   const [userEmail, setUserEmail] = React.useState('');
-  const [userPassword, setUserPassword] = React.useState('');
+  // const [userPassword, setUserPassword] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   // console.log(`значение urlParameter внутри App сейчас такое ${urlParameter}`);
   
@@ -113,6 +113,8 @@ function App() {
     setIsLoggedIn(false);
     history.push("/sign-in");
   }
+
+
 
 
   // Функция для обработки ошибок
@@ -225,11 +227,40 @@ function App() {
   // при каждом изменении любого компонента внутри родителя или самого родителя
 
   
-  // React.useEffect(() => {
-  //   setUrlParameter(url);
-    // console.log(`значение url внутри App такое - ${url}`);
+  React.useEffect(() => {
+    debugger;
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      api.checkToken(token)
+      .then(res => {
+        debugger;
+        console.log(res);
+        setUserEmail(res.data.email);
+        setIsLoggedIn(true);
+        history.push('/');
+      })
+      .catch(() => localStorage.removeItem('jwt'));
+    }
+  }, [history]);
 
-  // }, [url]);
+
+
+  // React.useEffect(() => {
+  //   debugger;
+  //   if (isOpen) {
+  //     api.checkToken(token)
+  //     .then(res => {
+  //       debugger;
+  //       console.log(res);
+  //       setUserEmail(res.data.email);
+  //       setIsLoggedIn(true);
+  //       history.push('/');
+  //     })
+  //     .catch(() => localStorage.removeItem('jwt'));
+  //   }
+  // }, [isOpen, closeAllPopups]);
+
+
 
   // React.useEffect(() => {
   //   console.log('Этот код выполнился в теле App, внутри хука useEffect c параметром [url]');
@@ -262,7 +293,7 @@ function App() {
           />
 
           <Route path="/sign-in">
-            <Login onLogin={onLogin}/>
+            <Login onLogin={onLogin} />
             <InfoTooltip
               isOpen={Boolean(infotooltipData.message)}
               onClose={closeAllPopups}
@@ -277,6 +308,10 @@ function App() {
               onClose={closeAllPopups}
               infotooltipData={infotooltipData}
             />
+          </Route>
+
+          <Route path="*">
+            { isLoggedIn ? <Redirect to="/" /> : <Redirect to="/login"/> }
           </Route>
 
         </Switch>
