@@ -1,6 +1,4 @@
 import React from 'react';
-// import OkIcon from '../images/Ok-icon.svg';
-// import FailIcon from '../images/Fail-icon.svg';
 import PopupWithForm from './PopupWithForm';
 import SuccessIcon from '../images/Ok-icon.svg';
 import ErrorIcon from '../images/Fail-icon.svg';

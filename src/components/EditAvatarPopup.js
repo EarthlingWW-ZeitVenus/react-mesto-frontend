@@ -2,7 +2,7 @@ import React from 'react';
 import PopupWithForm from './PopupWithForm';
 
 
-function EditAvatarPopup(props) {
+function EditAvatarPopup({ onUpdateAvatar, isOpen, onClose }) {
 
   console.log('Этот код выполнился в теле EditAvatarPopup');
 
@@ -10,7 +10,7 @@ function EditAvatarPopup(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    props.onUpdateAvatar({
+    onUpdateAvatar({
       avatar: inputAvatarRef.current.value
     });
     inputAvatarRef.current.value='';
@@ -18,8 +18,23 @@ function EditAvatarPopup(props) {
 
 
   return (
-    <PopupWithForm isOpen={props.isOpen} name="avatar" title="Обновить аватар" onClose={props.onClose} buttonText="Сохранить" onSubmit={handleSubmit}>
-    <input ref={inputAvatarRef} className="popup__input popup__input_field_link-to-avatar" id="link-to-avatar" name="linktoavatar" type="url" placeholder="Укажите ссылку на новый аватар" required />
+    <PopupWithForm
+      isOpen={isOpen}
+      name="avatar"
+      title="Обновить аватар"
+      onClose={onClose}
+      buttonText="Сохранить"
+      onSubmit={handleSubmit}
+    >
+      <input
+        ref={inputAvatarRef}
+        className="popup__input popup__input_field_link-to-avatar"
+        id="link-to-avatar"
+        name="linktoavatar"
+        type="url"
+        placeholder="Укажите ссылку на новый аватар"
+        required
+      />
     </PopupWithForm>
   )
 }

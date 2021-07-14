@@ -7,7 +7,6 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/api';
 import CurrentUserContext from '../contexts/CurrentUserContext';
-// import EnvironmentContext from '../contexts/EnvironmentContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
@@ -16,108 +15,43 @@ import Register from './Register';
 import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from './ProtectedRoute';
 
+//ToReview: работу InfoTooltip проверить до конца не получилось, пока сервер не дает успешного ответа, возможно лучше все-таки использовать
+//стейт isOpen
+
 //ToDo:
-// 1. Не забыть поменять в header заголовок с name на email
-// 2. Не забыть удалить отовсюду urlParameter
-// 3. Навести порядок, разбить на секции и дать описание
-// 4. Удалить отовсюду EnvironmentContext и файл, что содержит это внутри
-// 5. Подумать насчет того, чтобы логика handleChangePassword и handleChangeEmail не срабатывала на глобальных стейтах password и email в App,
-// это создает лишние операции рендеринга всех дочерних компонентов и самого компонента App
-// 6. Был какой-то прием в теории, позволяющий при изменении стейта избирательно рендерить только определенные компоненты, надо посмотреть его
-// 7. Удалить все ненужные файлы, те что закоментированы в index.css
-// 8. Везде убрать пропсы, использовать деструктуризацию
-// 9. Реализовать окрытие delete popup
-// 10. Все длинные строки кода переделать в столбцы
+// 1. Не забыть поменять в header заголовок с name на email +
+// 2. Не забыть удалить отовсюду urlParameter +
+// 3. Навести порядок, разбить на секции и дать описание +
+// 4. Удалить отовсюду EnvironmentContext и файл, что содержит это внутри +
+// 5. Подумать насчет того, чтобы логика handleChangePassword и handleChangeEmail не срабатывала на глобальных стейтах password и email в App
+// это создает лишние операции рендеринга всех дочерних компонентов и самого компонента App +
+// 6. Был какой-то прием в теории, позволяющий при изменении стейта не рендерить дочерние компоненты, надо посмотреть его
+// 7. Удалить все ненужные файлы, те что закоментированы в index.css +
+// 8. Везде убрать пропсы, использовать деструктуризацию +
+// 9. Реализовать окрытие delete popup +
+// 10. Все длинные строки кода переделать в столбцы +
+// 11. Проверить октрытие попапа Infotool при разных условиях
 
 
 function App() {
 
   const history = useHistory();
-  console.log(history);
   
   //Реакт-хуки состояний
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  // const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
-  // const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState(null);
   const [cards, setCards] = React.useState([]);
-  // const [urlParameter, setUrlParameter] = React.useState(url);
   const [infotooltipData, setInfotooltipData] = React.useState({message:"", status:""});
   const [userEmail, setUserEmail] = React.useState('');
-  // const [userPassword, setUserPassword] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  // console.log(`значение urlParameter внутри App сейчас такое ${urlParameter}`);
+  const [cardForDelete, setCardForDelete] = React.useState(null);
+  const [isPopupDeleteOpen, setIsPopupDeleteOpen] = React.useState(false);
   
-  //Разные функции компонента App:
 
-  //Регистрация пользователя
-  function onRegister({email, password}) {
-    // debugger;
-    api.register(email, password)
-      .then(res => {
-        // debugger;
-        console.log(res.data._id);
-        // setUserEmail(email);
-        // setUserPassword(password);
-        // setCurrentUser({ ...currentUser, email, password });
-        history.push('/sign-in');
-        // console.log(`Код выполнился в блоке then, результат - ${res}`);
-        setInfotooltipData({
-          message: 'Вы успешно зарегистрировались!',
-          status: 'success'
-        });
-      })
-      .catch(res => {
-        console.log(`Код выполнился в блоке catch, результат - ${res}`);
-        setInfotooltipData({
-          message: 'Что-то пошло не так! Попробуйте ещё раз.',
-          status: 'error'
-        });
-      })
-  }
-
-  function onLogin({email, password}) {
-    debugger;
-    api.login(email, password)
-      .then(jsonData => {
-        debugger;
-        if (jsonData.token) {
-          localStorage.setItem('jwt', jsonData.token);
-          setIsLoggedIn(true);
-        }
-        debugger;
-        console.log(jsonData);
-        console.log(localStorage);
-        setUserEmail(email);
-        // setUserPassword(password);
-        // setCurrentUser({ ...currentUser, email, password });
-        history.push('/');
-        // console.log(`Код выполнился в блоке then, результат - ${res}`);
-      })
-      .catch(res => {
-        debugger;
-        console.log(`Код выполнился в блоке catch, результат - ${res}`);
-        setInfotooltipData({
-          message: 'Что-то пошло не так! Попробуйте ещё раз.',
-          status: 'error'
-        });
-      })
-  }
-
-  function onSignOut(){
-    debugger;
-    localStorage.removeItem("jwt");
-    setIsLoggedIn(false);
-    history.push("/sign-in");
-  }
-
-
-
-
-  // Функция для обработки ошибок
+  //Функция для обработки ошибок
   function catchResponse(err) {
     if(err.status) {
       alert(`Сервер ответил ошибкой со статусом ${err.status}`)
@@ -126,8 +60,58 @@ function App() {
       alert(`Ваш запрос не ушел на сервер или сервер не ответил, ошибка ${err}`)
     };
   };
+
+  //Регистрация пользователя
+  function onRegister({email, password}) {
+    api.register(email, password)
+      .then(() => {
+        history.push('/sign-in');
+        setInfotooltipData({
+          message: 'Вы успешно зарегистрировались!',
+          status: 'success'
+        });
+      })
+      .catch(() => {
+        setInfotooltipData({
+          message: 'Что-то пошло не так! Попробуйте ещё раз.',
+          status: 'error'
+        });
+      })
+  }
+
+  //Авторизация пользователя
+  function onLogin({email, password}) {
+    //debugger;
+    api.login(email, password)
+      .then(jsonData => {
+        //debugger;
+        if (jsonData.token) {
+          localStorage.setItem('jwt', jsonData.token);
+          setIsLoggedIn(true);
+        };
+        setUserEmail(email);
+        history.push('/');
+      })
+      .catch(() => {
+        //debugger;
+        setInfotooltipData({
+          message: 'Что-то пошло не так! Попробуйте ещё раз.',
+          status: 'error'
+        });
+      })
+  }
+
+  //Выход пользователя
+  function onSignOut(){
+    //debugger;
+    localStorage.removeItem("jwt");
+    setIsLoggedIn(false);
+    history.push("/sign-in");
+  }
+
   //Изменеие лайк-статуса карточки
   function handleCardLike(card) {
+    //debugger;
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     api.changeLikeStatus(card._id, isLiked)
     .then((serverNewCard) => {
@@ -135,14 +119,26 @@ function App() {
     })
     .catch(err => catchResponse(err));
   };
+
+  //Открытие попапа при удалении карточки
+  function handleCardDeleteInitial(card) {
+    //debugger;
+    setCardForDelete(card);
+    setIsPopupDeleteOpen(true);
+  };
+
   //Удаление карточки
-  function handleCardDelete(card) {
-    api.deleteCard(card._id)
-    .then((res) => {
-      setCards(cards => cards.filter(c => c._id !== card._id));
+  function handleCardDelete(evt) {
+    //debugger;
+    evt.preventDefault();
+    api.deleteCard(cardForDelete._id)
+    .then(() => {
+      setCards(cards => cards.filter(c => c._id !== cardForDelete._id));
+      setIsPopupDeleteOpen(false);
     })
     .catch(err => catchResponse(err));
   };
+
   //Изменение имени и профессии пользователя
   function handleUpdateUser({name, about}) {
     api.editProfile(name, about)
@@ -152,6 +148,7 @@ function App() {
     })
     .catch(err => catchResponse(err));
   };
+
   //Изменение аватара пользователя
   function handleUpdateAvatar({avatar}) {
     api.changeAvatar(avatar)
@@ -161,6 +158,7 @@ function App() {
     })
     .catch(err => catchResponse(err));
   };
+
   //Добавление новой карточки
   function handleAddCard(cardTitle, cardUrl) {
     api.addCard(cardTitle, cardUrl)
@@ -170,17 +168,8 @@ function App() {
     })
     .catch(err => catchResponse(err));
   };
-  //Сохранение текущего относительного пути для использования в других компонентах
-  // const handleUrlParameter = (urlParameter) => {
-  //   setUrlParameter(urlParameter);
-  // };
-  //Флаги-семафоры для проверки состояния "открыт/закрыт" для каждого попапа
-  // const handleCaseLogin = () => {
-  //   setIsLoginPopupOpen(true);
-  // };
-  // const handleCaseRegister = () => {
-  //   setIsRegisterPopupOpen(true);
-  // };
+
+  //Хендлеры установки состояний попапов
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
   };
@@ -193,17 +182,17 @@ function App() {
   const handleCardClick = (cardObj) => {
     setSelectedCard(cardObj);
   };
-  //Переводит в состояние "закрыт" все попапы
+
+  //Закрывает все попапы
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard(null);
+    setIsPopupDeleteOpen(false);
     setInfotooltipData({message:"", status:""});
   };
 
-  //Эксперимент для улучшения понимания процессов
-  console.log('Этот код выполнился в теле App');
 
   //Хук осуществляющий запрос данных с сервера
   React.useEffect(() => {
@@ -211,30 +200,27 @@ function App() {
     //Тут выполняется код при рендере любого компонета Main или самого Main (если не указан конкретный компонент в конце)
       Promise.all( [api.getProfile(), api.getAllCards()] )
       .then(([currentUserObj, initialCards]) => {
-      console.log('Этот код выполнился в теле App, внутри хука useEffect c параметром []');
       setCurrentUser(currentUserObj);
       setCards(initialCards);
-      // console.log(currentUserObj);
       })
       .catch(err => catchResponse(err));
     }
-    // console.log(currentUser);
     //return () => {
     //Код внутри return выполнится при удалении любого или указанного компонета Main
     //}
   }, [isLoggedIn]);//После запятой указывается конкретный компонет или компоненты в массиве,
-  //если массив пустой то этот код исполнится один раз, если нет ничего будет рендерится
+  //если массив пустой то этот код исполнится один раз, если нет ничего будет выполнятся
   // при каждом изменении любого компонента внутри родителя или самого родителя
 
   
+  //Хук проверки токена пользователя
   React.useEffect(() => {
-    debugger;
+    //debugger;
     const token = localStorage.getItem('jwt');
     if (token) {
       api.checkToken(token)
       .then(res => {
-        debugger;
-        console.log(res);
+        //debugger;
         setUserEmail(res.data.email);
         setIsLoggedIn(true);
         history.push('/');
@@ -244,38 +230,15 @@ function App() {
   }, [history]);
 
 
-
-  // React.useEffect(() => {
-  //   debugger;
-  //   if (isOpen) {
-  //     api.checkToken(token)
-  //     .then(res => {
-  //       debugger;
-  //       console.log(res);
-  //       setUserEmail(res.data.email);
-  //       setIsLoggedIn(true);
-  //       history.push('/');
-  //     })
-  //     .catch(() => localStorage.removeItem('jwt'));
-  //   }
-  // }, [isOpen, closeAllPopups]);
-
-
-
-  // React.useEffect(() => {
-  //   console.log('Этот код выполнился в теле App, внутри хука useEffect c параметром [url]');
- 
-  // }, [url]);
-
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
 
-      {/* <EnvironmentContext.Provider value={{urlParameter, handleUrlParameter}}> */}
-
       <div className="page page_content_paddings">
 
-        <Header userEmail={userEmail} onSignOut={onSignOut} />
+        <Header 
+          userEmail={userEmail}
+          onSignOut={onSignOut}
+        />
 
         <Switch>
 
@@ -286,9 +249,9 @@ function App() {
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
             onEditAvatar={handleEditAvatarClick}
-            forwardMainOnCardClick={handleCardClick}
-            forwardMainOnCardLike={handleCardLike}
-            forwardMainOnCardDelete={handleCardDelete}
+            onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDeleteInitial}
             cards={cards}
           />
 
@@ -337,9 +300,11 @@ function App() {
         />
 
         <PopupWithForm
+          isOpen={isPopupDeleteOpen}
           name="delete"
           title="Вы уверены?"
           buttonText="Да"
+          onSubmit={handleCardDelete}
         />
 
         <ImagePopup
@@ -348,8 +313,6 @@ function App() {
         />
 
       </div>
-
-      {/* </EnvironmentContext.Provider> */}
 
     </CurrentUserContext.Provider>
   );

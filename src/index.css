@@ -69,22 +69,6 @@
 @import url(./blocks/popup/__input/_field/popup__input_field_link-to-avatar.css);
 @import url(./blocks/popup/__container/_theme/popup__container_theme_avatar.css);
 @import url(./blocks/popup/__form-container/_theme/popup__form-container_theme_infotooltip.css);
-/* @import url(./blocks/popup/_theme/popup_theme_login.css); */
-/* @import url(./blocks/popup/__container/_theme/popup__container_theme_login.css); */
-/* @import url(./blocks/popup/__title/_theme/popup__title_theme_login.css); */
-/* @import url(./blocks/popup/__input/_theme/popup__input_theme_login.css); */
-/* @import url(./blocks/popup/__form-container/_theme/popup__form-container_theme_login.css); */
-/* @import url(./blocks/popup/__submit-button/_theme/popup__submit-button_theme_login.css); */
-/* @import url(./blocks/popup/_theme/popup_theme_register.css); */
-/* @import url(./blocks/popup/__container/_theme/popup__container_theme_register.css); */
-/* @import url(./blocks/popup/__title/_theme/popup__title_theme_register.css); */
-/* @import url(./blocks/popup/__input/_theme/popup__input_theme_register.css); */
-/* @import url(./blocks/popup/__form-container/_theme/popup__form-container_theme_register.css); */
-/* @import url(./blocks/popup/__submit-button/_theme/popup__submit-button_theme_register.css); */
-
-/* ToDo:
-1. Удалить сверху все, что связано с login и register, обратно возвращаемся к предыдущему варианту с auth-with-form
-2. Удалить все файлы, что больше не испозуются вслед за первым действием */
 
 @import url(./blocks/auth-with-form/auth-with-form.css);
 @import url(./blocks/auth-with-form/__field-container/auth-with-form__field-container.css);

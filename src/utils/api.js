@@ -52,47 +52,16 @@ class Api {
     .then(res => {return this._thenResponse(res)});
   }
 
-  // addLike(cardId) {
-  //   return fetch(`${this._url}/${this._cohortId}/cards/likes/${cardId}`, {
-  //     method: 'PUT',
-  //     headers: {
-  //       "authorization": this._token,
-  //     }
-  //   })
-  //   .then(res => this._thenResponse(res));
-  // }
-
-  // deleteLike(cardId) {
-  //   return fetch(`${this._url}/${this._cohortId}/cards/likes/${cardId}`, {
-  //     method: 'DELETE',
-  //     headers: {
-  //       "authorization": this._token,
-  //     }
-  //   })
-  //   .then(res => this._thenResponse(res));
-  // }
-
-    //ToDo: можно попробовать сократить код, выполнив такую логику - method: isLiked ? "PUT" : "DELETE"
-    changeLikeStatus(cardId, isLiked) {
-      if (isLiked) {
-        return fetch(`${this._url}/${this._cohortId}/cards/likes/${cardId}`, {
-        method: 'DELETE',
-        headers: {
+  //Простановка или удаление лайка
+  changeLikeStatus(cardId, isLiked) {
+    return fetch(`${this._url}/${this._cohortId}/cards/likes/${cardId}`, {
+      method: isLiked ? "DELETE" : "PUT",
+      headers: {
         "authorization": this._token,
-        }
-        })
-        .then(res => this._thenResponse(res));
       }
-      else {
-        return fetch(`${this._url}/${this._cohortId}/cards/likes/${cardId}`, {
-        method: 'PUT',
-        headers: {
-        "authorization": this._token,
-        }
-        })
-        .then(res => {return this._thenResponse(res)});
-      }
-    }
+    })
+    .then(res => this._thenResponse(res));
+  }
 
   //Получает с сервера информацию о пользователе
   getProfile() {
@@ -154,6 +123,7 @@ class Api {
     });
   }
 
+  //Авторизация пользователя
   login(email, password) {
     debugger;
     return fetch(`${this._authUrl}/signin`, {
@@ -167,10 +137,26 @@ class Api {
     .then(res => {
       console.log(res);
       debugger;
-      // console.log(`Вот такой ответ приходит при успешной регистрации - ${res.data.json}`)
       return this._thenResponse(res);
     });
   }
+
+  //Временное решение, пока сервер Практикума не заработает
+  // login(email, password) {
+  //   console.log(email);
+  //   console.log(password);
+  //   let promise = new Promise(function (resolve, reject) {
+  //     setTimeout(
+  //       () =>
+  //         resolve({
+  //           token:
+  //             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjUxNDhlNWJiODhmZGNhOTIxYjZhYzciLCJpYXQiOjE1OTkyMTExNzN9.Q3DVLh7t0f0BjyG9gh3UlUREYQxl2chdGTGy701lF6I',
+  //         }),
+  //       2000,
+  //     );
+  //   });
+  //   return promise;
+  // }
 
   checkToken(token) {
     return fetch(`${this._authUrl}/users/me`, {

@@ -3,9 +3,6 @@ import React from 'react';
 
 
 function ProtectedRoute({ component: Component, ...props }) {
-//   debugger;
-  console.log("попал в протектед роут");
-  console.log(props.isLoggedIn);
 
 
   return (
