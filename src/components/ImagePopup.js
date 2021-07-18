@@ -1,6 +1,6 @@
 function ImagePopup({card, onClose}) {
 
-  console.log('Этот код выполнился в теле ImagePopup');
+  // console.log('Этот код выполнился в теле ImagePopup');
 
   return (
     <div className={`popup popup_theme_image ${card && 'popup_opened'}`}>

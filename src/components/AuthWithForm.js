@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-function AuthWithForm({name, title, buttonText, onSubmit, onEmailChange, onPasswordChange}) {
+function AuthWithForm({name, title, buttonText, onSubmit, onEmailChange, onPasswordChange, email, password}) {
 
 
   return (
@@ -18,6 +18,7 @@ function AuthWithForm({name, title, buttonText, onSubmit, onEmailChange, onPassw
             placeholder="Email"
             minLength="5"
             onChange={onEmailChange}
+            value={email}
             required
           />
           <span
@@ -32,6 +33,7 @@ function AuthWithForm({name, title, buttonText, onSubmit, onEmailChange, onPassw
             placeholder="Пароль"
             minLength="5"
             onChange={onPasswordChange}
+            value={password}
             required
           />
           <span

@@ -4,7 +4,7 @@ import PopupWithForm from './PopupWithForm';
 
 function EditAvatarPopup({ onUpdateAvatar, isOpen, onClose }) {
 
-  console.log('Этот код выполнился в теле EditAvatarPopup');
+  // console.log('Этот код выполнился в теле EditAvatarPopup');
 
   const inputAvatarRef = React.useRef();
 

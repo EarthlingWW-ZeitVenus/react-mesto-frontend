@@ -12,11 +12,11 @@ const iconImage = {
 
 function InfoTooltip({ isOpen, onClose, infotooltipData: {message, status} = {} }) {
 
-console.log(`В ИнфотТултип ИзОпен такой - ${isOpen}`);
+// console.log(`В ИнфотТултип ИзОпен такой - ${isOpen}`);
   
   return (
     <PopupWithForm name="infotooltip" isOpen={isOpen} onClose={onClose}>
-      <img style={{display: "block", margin: "24px auto 8px"}} src={iconImage[status]} alt={message}></img>
+      <img style={{display: "block", margin: "24px auto 8px"}} src={iconImage[status]} alt={message}/>
       <p style={{fontSize: "24px", fontWeight: "900", lineHeight: "29px", textAlign: "center"}}>{message}</p>
     </PopupWithForm>
   )

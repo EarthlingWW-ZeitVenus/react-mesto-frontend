@@ -5,7 +5,7 @@ import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup({ isOpen, onAddCard, onClose }) {
 
-  console.log('Этот код выполнился в теле AddPlacePopup');
+  // console.log('Этот код выполнился в теле AddPlacePopup');
 
   const [cardTitle, setCardTitle] = React.useState('');
   const [cardUrl, setCardUrl] = React.useState('');

@@ -26,6 +26,8 @@ function Register({onRegister}) {
     <AuthWithForm
       name="register"
       title="Регистрация"
+      email={email}
+      password={password}
       buttonText="Зарегистрироваться"
       onSubmit={handleSubmit}
       onEmailChange={handleEmailChange}

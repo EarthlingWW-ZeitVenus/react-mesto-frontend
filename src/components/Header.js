@@ -39,10 +39,10 @@ function Header({userEmail, onSignOut}) {
             </button>
           </Route>
           <Route path="/sign-up">
-            <Link style={cssForLink} to="/signin">Войти</Link>
+            <Link style={cssForLink} to="/sign-in">Войти</Link>
           </Route>
           <Route path="/sign-in">
-            <Link style={cssForLink} to="/signup">Регистрация</Link>
+            <Link style={cssForLink} to="/sign-up">Регистрация</Link>
           </Route>
         </Switch>
       </div>

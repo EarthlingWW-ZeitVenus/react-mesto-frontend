@@ -16,7 +16,7 @@ function Login({ onLogin }) {
   };
 
   function handleSubmit(evt) {
-    debugger;
+    // debugger;
     evt.preventDefault();
     onLogin({email, password});
   };
@@ -26,6 +26,8 @@ function Login({ onLogin }) {
     <AuthWithForm
       name="login"
       title="Вход"
+      email={email}
+      password={password}
       buttonText="Войти"
       onSubmit={handleSubmit}
       onEmailChange={handleEmailChange}

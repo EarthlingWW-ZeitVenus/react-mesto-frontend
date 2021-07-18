@@ -15,8 +15,16 @@ import Register from './Register';
 import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from './ProtectedRoute';
 
-//ToReview: работу InfoTooltip проверить до конца не получилось, пока сервер не дает успешного ответа, возможно лучше все-таки использовать
-//стейт isOpen
+//ToReview: по поводу комментария "можно лучше" и создания базового компонента Popup - идея нравится
+// согласен и поддерживаю, понимаю как реализовать и могу. Но это структурное изменение и я,
+// если четсно, опасаюсь производить такие модификации и отходить от чеклиста. Вы работу примете,
+// а другой ревьюер скажет - что в чеклисте нет никакого Popup.js, поэтому его нужно убрать.
+// Такой опыт у меня уже был - одни ревьюеры пропускают, другие нет.
+// Еще где-то в пятом спринте понял, что попапы похожие и начал создавать их с помощью JS.
+// На что мне было сказано, что все попапы должны быть сверстаны, а не созданы с помощью JS.
+// Переделывать быстро, к сожалению, не умею, убил на это кучу времени, в итоге шестой спринт
+// сдать не успел и потратил академ.
+
 
 //ToDo:
 // 1. Не забыть поменять в header заголовок с name на email +
@@ -30,7 +38,7 @@ import ProtectedRoute from './ProtectedRoute';
 // 8. Везде убрать пропсы, использовать деструктуризацию +
 // 9. Реализовать окрытие delete popup +
 // 10. Все длинные строки кода переделать в столбцы +
-// 11. Проверить октрытие попапа Infotool при разных условиях
+// 11. Проверить октрытие попапа Infotool при разных условиях +
 
 
 function App() {
@@ -44,6 +52,7 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState(null);
   const [cards, setCards] = React.useState([]);
+  const [isInfotooltipPopupOpen, setIsInfotooltipPopupOpen] = React.useState(false);
   const [infotooltipData, setInfotooltipData] = React.useState({message:"", status:""});
   const [userEmail, setUserEmail] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -70,12 +79,14 @@ function App() {
           message: 'Вы успешно зарегистрировались!',
           status: 'success'
         });
+        setIsInfotooltipPopupOpen(true);
       })
       .catch(() => {
         setInfotooltipData({
           message: 'Что-то пошло не так! Попробуйте ещё раз.',
           status: 'error'
         });
+        setIsInfotooltipPopupOpen(true);
       })
   }
 
@@ -84,11 +95,8 @@ function App() {
     //debugger;
     api.login(email, password)
       .then(jsonData => {
-        //debugger;
-        if (jsonData.token) {
-          localStorage.setItem('jwt', jsonData.token);
-          setIsLoggedIn(true);
-        };
+        localStorage.setItem('jwt', jsonData.token);
+        setIsLoggedIn(true);
         setUserEmail(email);
         history.push('/');
       })
@@ -190,7 +198,8 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setSelectedCard(null);
     setIsPopupDeleteOpen(false);
-    setInfotooltipData({message:"", status:""});
+    setIsInfotooltipPopupOpen(false);
+    // setInfotooltipData({message:"", status:""});
   };
 
 
@@ -257,29 +266,25 @@ function App() {
 
           <Route path="/sign-in">
             <Login onLogin={onLogin} />
-            <InfoTooltip
-              isOpen={Boolean(infotooltipData.message)}
-              onClose={closeAllPopups}
-              infotooltipData={infotooltipData}
-            />
           </Route>
 
           <Route path="/sign-up">
             <Register onRegister={onRegister}/>
-            <InfoTooltip
-              isOpen={Boolean(infotooltipData.message)}
-              onClose={closeAllPopups}
-              infotooltipData={infotooltipData}
-            />
           </Route>
 
           <Route path="*">
-            { isLoggedIn ? <Redirect to="/" /> : <Redirect to="/login"/> }
+            { isLoggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in"/> }
           </Route>
 
         </Switch>
       
         <Footer />
+
+        <InfoTooltip
+          isOpen={isInfotooltipPopupOpen}
+          onClose={closeAllPopups}
+          infotooltipData={infotooltipData}
+        />
 
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
